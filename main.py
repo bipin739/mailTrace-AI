@@ -1,0 +1,123 @@
+from contextlib import asynccontextmanager
+import os
+from fastapi import FastAPI, Request, status
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from sqlalchemy import text
+
+from backend.api.routes.email import router as email_router
+from backend.api.routes.cases import router as cases_router
+from backend.api.routes.correlation import router as correlation_router
+from backend.api.routes.reports import router as reports_router
+from backend.api.routes.audit import router as audit_router, evidence_router
+from backend.api.routes.dashboard import router as dashboard_router
+from backend.api.routes.attribution import router as attribution_router
+from backend.api.routes.confidence import router as confidence_router
+from backend.api.routes.cross_investigation import router as cross_investigation_router
+from backend.api.routes.copilot import router as copilot_router
+from backend.api.routes.benchmark import router as benchmark_router
+from backend.api.routes.intelligence import router as intelligence_router
+from backend.api.middleware.security_headers import SecurityHeadersMiddleware
+from backend.api.middleware.rate_limiter import RateLimiterMiddleware
+from backend.services.log_sanitizer import install_log_sanitizer
+from backend.db.session import engine, Base, init_db
+import backend.db.models  # Register models
+
+# Initialize logging privacy filter
+install_log_sanitizer()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Application lifespan manager.
+    Handles startup table verification with graceful retries if DB is starting slowly.
+    """
+    init_db(max_retries=15, retry_delay=2.0)
+    yield
+
+
+app = FastAPI(
+    title="Cybersecurity Email Forensic Parser API",
+    description="FastAPI service to ingest, parse, and analyze RFC-822 / .eml email files for cybersecurity threat investigation.",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+# Section 20: Register HTTP Security Hardening Middleware
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(RateLimiterMiddleware)
+
+# Enable CORS for frontend integration.
+# Set CORS_ORIGINS to a comma-separated list in Render, e.g.
+# https://your-frontend.onrender.com
+_cors_raw = os.getenv("CORS_ORIGINS", "*")
+_cors_origins = [origin.strip() for origin in _cors_raw.split(",") if origin.strip()]
+_cors_wildcard = _cors_origins == ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_cors_origins,
+    allow_credentials=not _cors_wildcard,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include API Routers
+app.include_router(email_router)
+app.include_router(cases_router)
+app.include_router(correlation_router)
+app.include_router(reports_router)
+app.include_router(audit_router)
+app.include_router(evidence_router)
+app.include_router(dashboard_router)
+app.include_router(attribution_router)
+app.include_router(confidence_router)
+app.include_router(cross_investigation_router)
+app.include_router(copilot_router)
+app.include_router(benchmark_router)
+app.include_router(intelligence_router)
+
+from backend.api.routes.benchmark import reset_workspace_state
+app.add_api_route("/api/workspace/reset", reset_workspace_state, methods=["POST"], tags=["Workspace"])
+
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={"detail": f"Internal Server Error: {str(exc)}", "error_code": "INTERNAL_SERVER_ERROR"}
+    )
+
+
+@app.get("/health", tags=["Health"])
+async def health_check():
+    """
+    Service health check endpoint.
+    Performs active database connectivity check.
+    """
+    db_status = "ok"
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+    except Exception as exc:
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content={
+                "status": "degraded",
+                "service": "cybersecurity-email-parser",
+                "database": f"unhealthy: {str(exc)}"
+            }
+        )
+
+    return {
+        "status": "ok",
+        "service": "cybersecurity-email-parser",
+        "database": db_status
+    }
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)

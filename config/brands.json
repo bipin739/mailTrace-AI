@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Microsoft",
+    "domain": "microsoft.com",
+    "base_name": "microsoft",
+    "keywords": ["microsoft", "msft", "office365", "outlook", "onedrive"],
+    "common_variants": ["micros0ft", "micro-soft", "m1crosoft"]
+  },
+  {
+    "name": "Google",
+    "domain": "google.com",
+    "base_name": "google",
+    "keywords": ["google", "gmail", "googlemail", "workspace"],
+    "common_variants": ["g00gle", "goog1e", "g-oogle"]
+  },
+  {
+    "name": "Apple",
+    "domain": "apple.com",
+    "base_name": "apple",
+    "keywords": ["apple", "icloud", "appleid"],
+    "common_variants": ["app1e", "appl-e"]
+  },
+  {
+    "name": "Amazon",
+    "domain": "amazon.com",
+    "base_name": "amazon",
+    "keywords": ["amazon", "aws", "prime"],
+    "common_variants": ["amaz0n", "amazn"]
+  },
+  {
+    "name": "PayPal",
+    "domain": "paypal.com",
+    "base_name": "paypal",
+    "keywords": ["paypal"],
+    "common_variants": ["paypa1", "pay-pal", "paypaI"]
+  },
+  {
+    "name": "GitHub",
+    "domain": "github.com",
+    "base_name": "github",
+    "keywords": ["github"],
+    "common_variants": ["g1thub", "git-hub"]
+  },
+  {
+    "name": "Instagram",
+    "domain": "instagram.com",
+    "base_name": "instagram",
+    "keywords": ["instagram"],
+    "common_variants": ["1nstagram", "insta-gram"]
+  },
+  {
+    "name": "Facebook",
+    "domain": "facebook.com",
+    "base_name": "facebook",
+    "keywords": ["facebook", "meta"],
+    "common_variants": ["faceb00k", "face-book"]
+  }
+]

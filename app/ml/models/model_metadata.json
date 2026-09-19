@@ -1,0 +1,183 @@
+{
+  "model_type": "TF-IDF + Logistic Regression",
+  "version": "1.0.0",
+  "trained_at": "2026-09-07T09:55:57.608493Z",
+  "total_samples": 50,
+  "train_samples": 37,
+  "test_samples": 13,
+  "evaluation_metrics": {
+    "accuracy": 0.8462,
+    "precision": 0.75,
+    "recall": 1.0,
+    "f1": 0.8571,
+    "confusion_matrix": {
+      "true_negative": 5,
+      "false_positive": 2,
+      "false_negative": 0,
+      "true_positive": 6,
+      "raw_matrix": [
+        [
+          5,
+          2
+        ],
+        [
+          0,
+          6
+        ]
+      ]
+    },
+    "classification_report": {
+      "legitimate": {
+        "precision": 1.0,
+        "recall": 0.7142857142857143,
+        "f1-score": 0.8333333333333334,
+        "support": 7.0
+      },
+      "phishing": {
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1-score": 0.8571428571428571,
+        "support": 6.0
+      },
+      "accuracy": 0.8461538461538461,
+      "macro avg": {
+        "precision": 0.875,
+        "recall": 0.8571428571428572,
+        "f1-score": 0.8452380952380952,
+        "support": 13.0
+      },
+      "weighted avg": {
+        "precision": 0.8846153846153846,
+        "recall": 0.8461538461538461,
+        "f1-score": 0.8443223443223443,
+        "support": 13.0
+      }
+    }
+  },
+  "top_features": {
+    "phishing_indicators": [
+      {
+        "feature": "httpurl",
+        "weight": 0.6692
+      },
+      {
+        "feature": "account",
+        "weight": 0.4952
+      },
+      {
+        "feature": "purchase",
+        "weight": 0.3464
+      },
+      {
+        "feature": "wire",
+        "weight": 0.3064
+      },
+      {
+        "feature": "payment",
+        "weight": 0.3045
+      },
+      {
+        "feature": "immediately",
+        "weight": 0.3006
+      },
+      {
+        "feature": "update",
+        "weight": 0.2937
+      },
+      {
+        "feature": "card",
+        "weight": 0.289
+      },
+      {
+        "feature": "message",
+        "weight": 0.2889
+      },
+      {
+        "feature": "security",
+        "weight": 0.2863
+      },
+      {
+        "feature": "details",
+        "weight": 0.2829
+      },
+      {
+        "feature": "urgent",
+        "weight": 0.2741
+      },
+      {
+        "feature": "confirm",
+        "weight": 0.2653
+      },
+      {
+        "feature": "password",
+        "weight": 0.2517
+      },
+      {
+        "feature": "click",
+        "weight": 0.2469
+      }
+    ],
+    "legitimate_indicators": [
+      {
+        "feature": "team",
+        "weight": -0.4018
+      },
+      {
+        "feature": "sam",
+        "weight": -0.2964
+      },
+      {
+        "feature": "hi",
+        "weight": -0.276
+      },
+      {
+        "feature": "thursday",
+        "weight": -0.2629
+      },
+      {
+        "feature": "00",
+        "weight": -0.2543
+      },
+      {
+        "feature": "tuesday",
+        "weight": -0.2401
+      },
+      {
+        "feature": "know",
+        "weight": -0.2121
+      },
+      {
+        "feature": "october",
+        "weight": -0.212
+      },
+      {
+        "feature": "pipeline",
+        "weight": -0.2111
+      },
+      {
+        "feature": "scheduled",
+        "weight": -0.2077
+      },
+      {
+        "feature": "pm",
+        "weight": -0.1956
+      },
+      {
+        "feature": "ending numtoken",
+        "weight": -0.1929
+      },
+      {
+        "feature": "ending",
+        "weight": -0.1929
+      },
+      {
+        "feature": "confirmation",
+        "weight": -0.1821
+      },
+      {
+        "feature": "github",
+        "weight": -0.1808
+      }
+    ]
+  }
+}
